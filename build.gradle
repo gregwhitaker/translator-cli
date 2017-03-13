@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'interview.translator'
+version '1.0.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.beust:jcommander:1.64'
+}
+
+mainClassName = 'interview.translator.Main'
+
+run {
+    main = 'interview.translator.Main'
+    args = [
+            "${project.rootDir}/example/Set1.txt",
+            "${project.rootDir}/example/Set2.txt",
+            "${project.rootDir}/example/Set3.txt"
+    ]
+}
