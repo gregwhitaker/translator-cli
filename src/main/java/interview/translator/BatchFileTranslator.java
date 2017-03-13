@@ -3,6 +3,7 @@ package interview.translator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -14,10 +15,10 @@ class BatchFileTranslator implements Callable<List<String>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchFileTranslator.class);
 
-    private List<String> inputFiles;
+    private final File inputFile;
 
-    public BatchFileTranslator(List<String> inputFiles) {
-        this.inputFiles = inputFiles;
+    public BatchFileTranslator(File inputFile) {
+        this.inputFile = inputFile;
     }
 
     @Override
