@@ -14,6 +14,8 @@ repositories {
 
 dependencies {
     compile 'com.beust:jcommander:1.64'
+    compile 'org.slf4j:slf4j-simple:1.7.22'
+    compile 'org.slf4j:slf4j-api:1.7.22'
 }
 
 mainClassName = 'interview.translator.Main'

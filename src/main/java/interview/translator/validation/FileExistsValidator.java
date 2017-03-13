@@ -17,5 +17,5 @@ public class FileExistsValidator implements IParameterValidator {
             throw new ParameterException("Input file: '" + value + "' does not exist!");
         }
     }
-    
+
 }
