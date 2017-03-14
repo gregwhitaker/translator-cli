@@ -1,9 +1,5 @@
 package interview.translator;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,7 +25,6 @@ public class ProcessFileTask implements Callable<List<String>> {
 
     private final Path inputPath;
     private final Path outputPath;
-    private final ObjectMapper mapper = new ObjectMapper();
 
     public ProcessFileTask(Path inputPath, Path outputPath) {
         this.inputPath = inputPath;
@@ -39,6 +33,8 @@ public class ProcessFileTask implements Callable<List<String>> {
 
     @Override
     public List<String> call() throws Exception {
+        LOGGER.info("Translating file '" + inputPath + "'");
+
         List<String> translatedValues = new ArrayList<>();
 
         final String newline = System.getProperty("line.separator");
@@ -56,7 +52,7 @@ public class ProcessFileTask implements Callable<List<String>> {
                     if (response.getStatusLine().getStatusCode() == 200) {
                         httpEntity = response.getEntity();
 
-                        String translatedValue = getTranslatedValueFromResponse(httpEntity.getContent());
+                        String translatedValue = getTranslatedValueFromResponse(EntityUtils.toString(httpEntity, Charset.forName("UTF-8")));
 
                         translatedValues.add(translatedValue);
                         writer.write(translatedValue);
@@ -75,10 +71,17 @@ public class ProcessFileTask implements Callable<List<String>> {
         return translatedValues;
     }
 
-    private String getTranslatedValueFromResponse(InputStream rawValue) throws Exception {
-        JsonNode json = mapper.readTree(rawValue);
-        boolean test = true;
-        return "test";
+    private String getTranslatedValueFromResponse(String rawValue) throws Exception {
+        // HACK: The API is returning malformed JSON (ex: [[["förseelse","wrongdoing",,,2]],,"en"] ) so I had to do
+        // this very gross thing to parse out the translated values :(
+        if (rawValue != null && !rawValue.isEmpty()) {
+            String val = rawValue.substring(0, rawValue.indexOf(","));
+            val = val.replaceAll("\\[", "");
+            val = val.replaceAll("\"", "");
+            return val;
+        }
+
+        return "";
     }
 
 }

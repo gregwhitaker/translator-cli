@@ -1,6 +1,8 @@
 package interview.translator;
 
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +21,7 @@ import java.util.concurrent.Future;
  */
 public class Main {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
     private static final String OUTPUT_FILE_NAME = "AsYouGo.txt";
     private static final String BATCH_FILE_NAME = "Batched.txt";
@@ -41,19 +44,24 @@ public class Main {
      * @throws Exception
      */
     public void run(String... args) throws Exception {
+        LOGGER.info("Translating '" + args.length + "' files...");
+
         Path outputFilePath = Paths.get(OUTPUT_FILE_NAME);
         Path batchFilePath = Paths.get(BATCH_FILE_NAME);
 
         // Cleaning up output files from previous run
         if (Files.exists(outputFilePath)) {
+            LOGGER.info("Removing '" + outputFilePath + "' from previous translation run");
             Files.delete(outputFilePath);
         }
 
         if (Files.exists(batchFilePath)) {
+            LOGGER.info("Removing '" + batchFilePath + "' from previous translation run");
             Files.delete(batchFilePath);
         }
 
         Files.createFile(outputFilePath);
+        Files.createFile(batchFilePath);
 
         try {
             List<Callable<List<String>>> tasks = new ArrayList<>();
@@ -72,6 +80,10 @@ public class Main {
             for (Future<List<String>> f : EXECUTOR.invokeAll(tasks)) {
                 results.add(f.get());
             }
+
+            EXECUTOR.submit(new ProcessBatchFileTask(results, batchFilePath)).get();
+
+            LOGGER.info("Translations Completed!");
         } finally {
             EXECUTOR.shutdown();
         }
