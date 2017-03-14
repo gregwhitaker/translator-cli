@@ -81,7 +81,11 @@ public class Main {
                 results.add(f.get());
             }
 
+            LOGGER.info("Created Translation File: " + outputFilePath.toFile().getAbsolutePath());
+
             EXECUTOR.submit(new ProcessBatchFileTask(results, batchFilePath)).get();
+
+            LOGGER.info("Created Translation File: " + batchFilePath.toFile().getAbsolutePath());
 
             LOGGER.info("Translations Completed!");
         } finally {
