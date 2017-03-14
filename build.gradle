@@ -13,12 +13,11 @@ repositories {
 }
 
 dependencies {
-    compile 'com.beust:jcommander:1.64'
+    compile 'org.apache.httpcomponents:httpclient:4.5'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.7'
     compile 'org.slf4j:slf4j-simple:1.7.22'
     compile 'org.slf4j:slf4j-api:1.7.22'
 }
-
-mainClassName = 'interview.translator.Main'
 
 run {
     main = 'interview.translator.Main'
