@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+/**
+ * Task that sends strings from a file to the google translate api and returns the results as well as writes
+ * them to a file.
+ */
 public class ProcessFileTask implements Callable<List<String>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessFileTask.class);
