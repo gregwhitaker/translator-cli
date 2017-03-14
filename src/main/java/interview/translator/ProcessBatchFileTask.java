@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Task that sorts and batches the translated results returned from {@link ProcessFileTask}s.
+ */
 public class ProcessBatchFileTask implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessFileTask.class);

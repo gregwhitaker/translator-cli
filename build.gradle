@@ -1,6 +1,8 @@
 plugins {
     id 'java'
     id 'application'
+    id 'groovy'
+    id 'idea'
 }
 
 group 'interview.translator'
