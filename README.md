@@ -5,7 +5,7 @@ translator-cli
 The application can be built using the following Gradle command:
 
 ```
- $ ./gradlew installDist
+ $ ./gradlew build installDist
 ```
 
 ##Running the App

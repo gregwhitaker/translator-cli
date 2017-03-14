@@ -4,9 +4,7 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
-import java.nio.file.Files
 import java.nio.file.Paths
-
 
 class ProcessBatchFileTaskTest extends Specification {
 
@@ -15,7 +13,7 @@ class ProcessBatchFileTaskTest extends Specification {
 
     def "createSortedBatchFile"() {
         setup:
-        Set<List<String>> translations = new HashSet<>();
+        Set<List<String>> translations = new HashSet<>()
         translations << ['a']
         translations << ['c']
         translations << ['b']
@@ -32,4 +30,5 @@ class ProcessBatchFileTaskTest extends Specification {
         outputFile.text == "a\nb\nc\n"
 
     }
+
 }
